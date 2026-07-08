@@ -10,6 +10,7 @@ public class Countdown : MonoBehaviour
 
     public void StartCountdown()
     {
+        GameController.gc.ResetAFKTimer();
         GameController.gc.lightControl.CountdownLayout();
         countdownTime = 3f;
         countdownText.GetComponent<TMPro.TMP_Text>().text = countdownTime.ToString();

@@ -33,6 +33,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private float gameDuration = 30f;
     private float timer = -1;
 
+    [SerializeField] private float maxAFKTime = 20;
+
+    private float afkTimer;
+
     #endregion
 
 
@@ -50,6 +54,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         ResetToIntroScene();
+        ResetAFKTimer();
         ButtonCount = gamePanel.transform.childCount;
     }
 
@@ -62,6 +67,11 @@ public class GameController : MonoBehaviour
         countdownScene.SetActive(false);
         rankingScene.SetActive(false);
         lightControl.IntroLayout();
+    }
+
+    public void ResetAFKTimer()
+    {
+        afkTimer = maxAFKTime;
     }
 
 
@@ -110,6 +120,7 @@ public class GameController : MonoBehaviour
             comboCount = 0;
             ScoreMultiplier = 1;
         }
+        ResetAFKTimer();
         UpdateUI();
     }
 
@@ -132,6 +143,7 @@ public class GameController : MonoBehaviour
         rankingScene.SetActive(true);
         gameScene.SetActive(false);
         lightControl.DefaultLayout();
+        ResetAFKTimer();
     }
 
     void FixedUpdate()
