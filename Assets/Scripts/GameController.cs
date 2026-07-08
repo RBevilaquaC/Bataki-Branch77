@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text multiplierText;
     [SerializeField] private TMP_Text hitCountText;
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private TMP_Text highScoreText;
     private int ButtonCount;
     private int Score;
     private int ScoreMultiplier;
@@ -39,6 +40,8 @@ public class GameController : MonoBehaviour
 
 
 
+
+
     #region Game Manipulation
     public void StartGame()
     {   
@@ -46,9 +49,18 @@ public class GameController : MonoBehaviour
         ScoreMultiplier = 1;
         hitCount = 0;
         timer = 30;
+        ResetButtons();
         HighlightRandomButton();
         UpdateUI();
     }   
+
+    private void ResetButtons()
+    {
+        for(int i = 0; i < ButtonCount; i++)
+        {
+            gamePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+        }
+    }
 
     private void HighlightRandomButton()
     {
@@ -59,7 +71,6 @@ public class GameController : MonoBehaviour
     public void CheckButtonPress()
     {
         GameObject pressedButton = EventSystem.current.currentSelectedGameObject;
-        print(pressedButton.GetComponent<Image>().color);
         if(pressedButton.GetComponent<Image>().color == Color.green)
         {
             pressedButton.GetComponent<Image>().color = Color.white;
@@ -70,7 +81,7 @@ public class GameController : MonoBehaviour
             HighlightRandomButton();
         } else
         {
-            comboCount=0;
+            comboCount = 0;
             ScoreMultiplier = 1;
         }
         UpdateUI();
@@ -82,6 +93,7 @@ public class GameController : MonoBehaviour
         multiplierText.text = "x" + (ScoreMultiplier-1).ToString();
         hitCountText.text = hitCount.ToString();
         timerText.text = Mathf.FloorToInt(timer).ToString() + "s";
+        highScoreText.text = Score.ToString();
     }
 
     private void AddScore()
@@ -99,7 +111,6 @@ public class GameController : MonoBehaviour
             timerText.text = Mathf.FloorToInt(timer).ToString() + "s";
         }
     }
-
 
     #endregion
 
