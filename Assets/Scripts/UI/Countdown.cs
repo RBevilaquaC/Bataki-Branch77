@@ -10,6 +10,7 @@ public class Countdown : MonoBehaviour
 
     public void StartCountdown()
     {
+        GameController.gc.lightControl.CountdownLayout();
         countdownTime = 3f;
         countdownText.GetComponent<TMPro.TMP_Text>().text = countdownTime.ToString();
         StartCoroutine(CountdownCoroutine());
@@ -19,6 +20,7 @@ public class Countdown : MonoBehaviour
     {
         countdownScene.SetActive(false);
         GameScene.SetActive(true);
+        GameController.gc.lightControl.DefaultLayout();
         GameController.gc.StartGame();
     }
 

@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
     #region Variables
     public static GameController gc;
 
-    [SerializeField] private LightControl lightControl;
+    public LightControl lightControl;
 
     [SerializeField] private GameObject introScene;
     [SerializeField] private GameObject loginScene;
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
         ButtonCount = gamePanel.transform.childCount;
     }
 
-    void ResetToIntroScene()
+    public void ResetToIntroScene()
     {
         introScene.SetActive(true);
         loginScene.SetActive(false);
@@ -131,6 +131,7 @@ public class GameController : MonoBehaviour
     {
         rankingScene.SetActive(true);
         gameScene.SetActive(false);
+        lightControl.DefaultLayout();
     }
 
     void FixedUpdate()
@@ -144,6 +145,7 @@ public class GameController : MonoBehaviour
                 EndGame();
             }
         }
+
     }
 
     #endregion
