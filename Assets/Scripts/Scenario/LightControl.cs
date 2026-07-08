@@ -30,21 +30,21 @@ public class LightControl : MonoBehaviour
         bottomLight.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y - cam.orthographicSize, 0);
     }
 
-    private void IntroLayout()
+    public void IntroLayout()
     {
         topLight.enabled = true;
         centerLight.enabled = false;
         bottomLight.enabled = true;
     }
 
-    private void DefaultLayout()
+    public void DefaultLayout()
     {
         topLight.enabled = true;
         centerLight.enabled = false;
         bottomLight.enabled = false;
     }
 
-    private void CountdownLayout()
+    public void CountdownLayout()
     {
         topLight.enabled = false;
         centerLight.enabled = true;
