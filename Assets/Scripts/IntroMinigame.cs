@@ -29,6 +29,7 @@ public class TitleMiniGame : MonoBehaviour, IPointerClickHandler
 
         if (clickedIndex == currentIndex)
         {
+            GameController.gc.audioManager.PlayButtonClick();
             SelectRandomCharacter();
         }
     }

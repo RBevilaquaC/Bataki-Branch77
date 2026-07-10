@@ -31,6 +31,7 @@ public class Countdown : MonoBehaviour
 
         while (currentTime > 0)
         {
+            GameController.gc.audioManager.PlayCountdownBeep();
             countdownText.GetComponent<TMPro.TMP_Text>().text = Mathf.Ceil(currentTime).ToString();
             yield return new WaitForSeconds(1f);
             currentTime--;

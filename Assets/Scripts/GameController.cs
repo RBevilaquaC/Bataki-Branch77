@@ -9,10 +9,14 @@ public class GameController : MonoBehaviour
     #region Variables
     public static GameController gc;
 
+    [Header("Managers")]
     public LightControl lightControl;
     public DataManager dataManager;
+    public AudioManager audioManager;
     [SerializeField] private RankingPanel rankingPanel;
 
+
+    [Header("Scenes")]
     [SerializeField] private GameObject introScene;
     [SerializeField] private GameObject loginScene;
     [SerializeField] private GameObject ruleScene;
@@ -20,6 +24,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject countdownScene;
     [SerializeField] private GameObject rankingScene;
 
+    [Header("UI Elements")]
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text multiplierText;
@@ -29,6 +34,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text reactionTimeAvgText;
     [SerializeField] private TMP_Text bestStreakText;
 
+    [Header("Game Settings")]
     public string playerName;
     private int ButtonCount;
     private int score;
@@ -79,7 +85,6 @@ public class GameController : MonoBehaviour
 
 
 
-
     #region Game Manipulation
     public void StartGame()
     {   
@@ -115,6 +120,13 @@ public class GameController : MonoBehaviour
         if(pressedButton.GetComponent<Image>().color == Color.green)
         {
             pressedButton.GetComponent<Image>().color = Color.white;
+
+            if(comboCount % hitPerCombo == 0 && comboCount > 0)
+            {
+                audioManager.PlayIncreaseCombo();
+            } else {
+                audioManager.PlayButtonClick();
+            }
 
             comboCount++;
             currentStreak = comboCount;
