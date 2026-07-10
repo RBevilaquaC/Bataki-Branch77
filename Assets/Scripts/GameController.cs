@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
     public static GameController gc;
 
     public LightControl lightControl;
+    public DataManager dataManager;
+    [SerializeField] private RankingPanel rankingPanel;
 
     [SerializeField] private GameObject introScene;
     [SerializeField] private GameObject loginScene;
@@ -25,11 +27,14 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text highScoreText;
 
+    public string playerName;
     private int ButtonCount;
-    private int Score;
-    private int ScoreMultiplier;
+    private int score;
+    private int scoreMultiplier;
     private int comboCount;
     private int hitCount;
+    [SerializeField] private int scorePerHit = 10;
+    [SerializeField] private int hitPerCombo = 5;
     [SerializeField] private float gameDuration = 30f;
     private float timer = -1;
 
@@ -42,17 +47,9 @@ public class GameController : MonoBehaviour
 
 
 
-
-    void Awake()
-    {
-        if(gc == null) gc = this; 
-        else Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
-    }
-
     void Start()
     {
+        gc = this;
         ResetToIntroScene();
         ResetAFKTimer();
         ButtonCount = gamePanel.transform.childCount;
@@ -81,8 +78,8 @@ public class GameController : MonoBehaviour
     #region Game Manipulation
     public void StartGame()
     {   
-        Score = 0;
-        ScoreMultiplier = 1;
+        score = 0;
+        scoreMultiplier = 1;
         hitCount = 0;
         timer = gameDuration;
         ResetButtons();
@@ -111,14 +108,14 @@ public class GameController : MonoBehaviour
         {
             pressedButton.GetComponent<Image>().color = Color.white;
             comboCount++;
-            ScoreMultiplier = Mathf.FloorToInt(comboCount/5) + 1;
+            scoreMultiplier = Mathf.CeilToInt(comboCount/hitPerCombo)+1;
             hitCount++;
             AddScore();
             HighlightRandomButton();
         } else
         {
             comboCount = 0;
-            ScoreMultiplier = 1;
+            scoreMultiplier = 1;
         }
         ResetAFKTimer();
         UpdateUI();
@@ -126,35 +123,51 @@ public class GameController : MonoBehaviour
 
     private void UpdateUI()
     {
-        scoreText.text = Score.ToString();
-        multiplierText.text = "x" + (ScoreMultiplier-1).ToString();
+        scoreText.text = score.ToString();
+        multiplierText.text = "x" + (scoreMultiplier).ToString();
         hitCountText.text = hitCount.ToString();
         timerText.text = Mathf.FloorToInt(timer).ToString() + "s";
-        highScoreText.text = Score.ToString();
+        highScoreText.text = score .ToString();
     }
 
     private void AddScore()
     {
-        Score += 10 * ScoreMultiplier;
+        score += scorePerHit * scoreMultiplier;
     }
 
     public void EndGame()
     {
+        AddCurrentScoreToRanking();
+        rankingPanel.UpdateRankingListUI();
         rankingScene.SetActive(true);
         gameScene.SetActive(false);
         lightControl.DefaultLayout();
         ResetAFKTimer();
+    }
+    
+    public void AddCurrentScoreToRanking()
+    {
+        dataManager.InsertScore(playerName, score);
     }
 
     void FixedUpdate()
     {
         if(timer > 0)
         {
-            timer -= Time.deltaTime;
+            timer -= Time.fixedDeltaTime;
             timerText.text = Mathf.FloorToInt(timer).ToString() + "s";
             if(timer <= 0)
             {
                 EndGame();
+            }
+        }
+
+        if(afkTimer > 0)
+        {
+            afkTimer -= Time.fixedDeltaTime;
+            if(afkTimer <= 0)
+            {
+                ResetToIntroScene();
             }
         }
 

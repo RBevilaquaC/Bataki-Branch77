@@ -1,16 +1,33 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using TMPro;
 
 public class LoginManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    DataManager dataManager;
+    [SerializeField] private TMP_InputField playerNameInput;
+    [SerializeField] private TMP_InputField emailInput;
+    [SerializeField] private TMP_InputField companyNameInput;
+    [SerializeField] private Button beginButton;
+
     void Start()
     {
-        
+        dataManager = GameController.gc.dataManager;
+        beginButton.interactable = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckNameInput()
     {
-        
+        beginButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+    }
+
+    public void OnBeginButtonClicked()
+    {
+        string playerName = playerNameInput.text;
+        string email = emailInput.text;
+        string companyName = companyNameInput.text;
+
+        dataManager.InsertPlayerData(playerName, email, companyName);
     }
 }
