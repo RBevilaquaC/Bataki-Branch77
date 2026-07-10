@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public DataManager dataManager;
     public AudioManager audioManager;
     [SerializeField] private RankingPanel rankingPanel;
+    [SerializeField] private ParticleManager particleManager;
 
 
     [Header("Scenes")]
@@ -121,12 +122,9 @@ public class GameController : MonoBehaviour
         {
             pressedButton.GetComponent<Image>().color = Color.white;
 
-            if(comboCount % hitPerCombo == 0 && comboCount > 0)
-            {
-                audioManager.PlayIncreaseCombo();
-            } else {
-                audioManager.PlayButtonClick();
-            }
+            particleManager.PlayParticleSystem(pressedButton.transform.position);
+
+            TriggerButtonClickFeedback();
 
             comboCount++;
             currentStreak = comboCount;
@@ -148,6 +146,16 @@ public class GameController : MonoBehaviour
         }
         ResetAFKTimer();
         UpdateUI();
+    }
+
+    private void TriggerButtonClickFeedback()
+    {
+        if(comboCount % hitPerCombo == 0 && comboCount > 0)
+        {
+            audioManager.PlayIncreaseCombo();
+        } else {
+            audioManager.PlayButtonClick();
+        }
     }
 
     private void UpdateUI()

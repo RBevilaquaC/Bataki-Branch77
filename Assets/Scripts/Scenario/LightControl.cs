@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.InputSystem;
 
 public class LightControl : MonoBehaviour
 {
@@ -50,5 +51,5 @@ public class LightControl : MonoBehaviour
         centerLight.enabled = true;
         bottomLight.enabled = false;
     }
-
+    
 }

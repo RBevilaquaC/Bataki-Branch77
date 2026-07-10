@@ -119,27 +119,4 @@ public class DataManager : MonoBehaviour
              .ToList();
     }
 
-/*
-    public List<(string Player, int Score)> GetTop4Players()
-    {
-        string sql = @"
-            SELECT
-                p.player AS Player,
-                MAX(s.score) AS Score
-            FROM ScoreBoard s
-            INNER JOIN PlayerData p
-                ON p.id = s.player_id
-            GROUP BY p.id, p.player
-            ORDER BY Score DESC
-            LIMIT 4;
-        ";
-
-        var result = db.Query<RankingResult>(sql);
-
-        return result
-            .Select(r => (r.Player, r.Score))
-            .ToList();
-    }
-*/
-
 }

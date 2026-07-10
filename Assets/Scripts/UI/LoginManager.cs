@@ -30,4 +30,5 @@ public class LoginManager : MonoBehaviour
 
         dataManager.InsertPlayerData(playerName, email, companyName);
     }
+
 }
