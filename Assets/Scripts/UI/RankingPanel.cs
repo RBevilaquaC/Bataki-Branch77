@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System;
 using System.Collections.Generic;
 
 public class RankingPanel : MonoBehaviour
@@ -11,13 +12,16 @@ public class RankingPanel : MonoBehaviour
 
     public void UpdateRankingListUI()
     {
-
         List<(string playerName, int score)> rankingList = GameController.gc.dataManager.GetTop4Players();
+
         for (int i = 0; i < players.Count; i++)
         {
             if (i < rankingList.Count)
             {
-                players[i].text = rankingList[i].playerName;
+                string firstName = rankingList[i].playerName
+                    .Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+
+                players[i].text = firstName;
                 scores[i].text = rankingList[i].score.ToString();
             }
             else
