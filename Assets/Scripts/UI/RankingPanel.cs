@@ -25,11 +25,8 @@ public class RankingPanel : MonoBehaviour
         RectTransform prefabRect = RankLabelPrefab.GetComponent<RectTransform>();
 
         float aspectRatio = prefabRect.rect.height / prefabRect.rect.width;
-
         float itemWidth = contentRect.rect.width;
-
         float itemHeight = itemWidth * aspectRatio *.5f;
-
         float contentHeight = itemHeight * maxPlayersToShow + spacing * (maxPlayersToShow - 1);
 
         contentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, contentHeight);
