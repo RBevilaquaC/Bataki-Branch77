@@ -8,13 +8,13 @@ O ciclo de vida global do jogo é gerenciado por meio do padrão **Singleton** n
 ### 2. Persistência de Dados Relacional (SQLite)
 A persistência de dados utiliza a biblioteca `SQLite` operando como um mapeamento objeto-relacional (ORM) local.
 * **Estrutura de Tabelas:** O banco de dados armazena as entidades `PlayerData` (com os campos `Id`, `Player`, `Email` e `CompanyName`) e `ScoreBoard` (com as colunas `Id`, `PlayerId`, `Time` e `Score`).
-* **Tratamento de Conflitos:** O método `InsertPlayerData` utiliza expressões LINQ (`FirstOrDefault`) para verificar a existência prévia do registro do jogador[cite: 9]. Caso exista, executa um comando `Update` para atualizar os dados cadastrais; caso contrário, realiza um `Insert`.
+* **Tratamento de Conflitos:** O método `InsertPlayerData` utiliza expressões LINQ (`FirstOrDefault`) para verificar a existência prévia do registro do jogador. Caso exista, executa um comando `Update` para atualizar os dados cadastrais; caso contrário, realiza um `Insert`.
 * **Otimização de Consultas (Ranking):** O método `GetTopPlayers` executa uma subquery SQL estruturada para selecionar apenas o maior score de cada jogador individual (`ORDER BY score DESC, time ASC LIMIT 1`), aplicando posteriormente uma ordenação decrescente limitada pela variável `rankingSize`. Isso impede que um mesmo usuário ocupe múltiplas posições no painel de líderes.
 
 ### 3. Adaptação Dinâmica de Resolução (UI)
 O posicionamento correto dos elementos de interface em dispositivos com diferentes proporções de tela é gerenciado pela classe `PortraitAnchor`.
 * **Cálculo de Proporção:** O script compara em tempo real a proporção atual da tela (`Screen.width / Screen.height`) com o aspecto nativo configurado para o projeto (Modo Retrato — `9:16`).
-* **Manipulação do RectTransform:** Com base no desvio detectado, os limites matemáticos de `anchorMin` e `anchorMax` são recalculados dinamicamente para aplicar técnicas de *Letterboxing* ou *Pillarboxing*, definindo os offsets como zero para travar a área útil de interação[cite: 4].
+* **Manipulação do RectTransform:** Com base no desvio detectado, os limites matemáticos de `anchorMin` e `anchorMax` são recalculados dinamicamente para aplicar técnicas de *Letterboxing* ou *Pillarboxing*, definindo os offsets como zero para travar a área útil de interação.
 
 ### 4. Instanciação e Layout Computados via Script
 A tabela de classificação (`RankingPanel`) é construída de maneira dinâmica para evitar a dependência de objetos estáticos na hierarquia da cena.
