@@ -53,6 +53,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float maxAFKTime = 20;
 
     private float afkTimer;
+    private int lastIndex = -1;
+    public int rankingListSize = 10;
 
     #endregion
 
@@ -111,7 +113,16 @@ public class GameController : MonoBehaviour
 
     private void HighlightRandomButton()
     {
-        Button randomButton = gamePanel.transform.GetChild(Random.Range(0, ButtonCount)).GetComponent<Button>();
+        int index;
+        do
+        {
+            index = Random.Range(0, ButtonCount);
+        }
+        while (index == lastIndex);
+
+        lastIndex = index;
+
+        Button randomButton = gamePanel.transform.GetChild(index).GetComponent<Button>();
         randomButton.GetComponent<Image>().color = Color.green;
     }
 
@@ -179,9 +190,11 @@ public class GameController : MonoBehaviour
 
         highScoreText.text = score .ToString();
         bestStreakText.text = "x" + bestStreak.ToString();
-        reactionTimeAvgText.text = reactionTimeAvg.ToString("F2") + "s";
+        reactionTimeAvgText.text = reactionTimeAvg.ToString("F3") + "s";
 
         rankingPanel.UpdateRankingListUI();
+        rankingPanel.playerName = playerName;
+        rankingPanel.UpdateCongratulationsText();
 
         rankingScene.SetActive(true);
         gameScene.SetActive(false);
@@ -198,7 +211,7 @@ public class GameController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(timer > 0)
+        if(timer >= 0)
         {
             timer -= Time.fixedDeltaTime;
             timerText.text = Mathf.FloorToInt(timer).ToString() + "s";

@@ -9,6 +9,7 @@ public class TitleMiniGame : MonoBehaviour, IPointerClickHandler
     private string originalText;
     private int currentIndex = -1;
 
+
     private void Start()
     {
         titleText = GetComponent<TMP_Text>();
@@ -36,7 +37,15 @@ public class TitleMiniGame : MonoBehaviour, IPointerClickHandler
 
     private void SelectRandomCharacter()
     {
-        currentIndex = Random.Range(0, originalText.Length);
+        int index;
+
+        do
+        {
+            index = Random.Range(0, originalText.Length);
+        }
+        while (index == currentIndex);
+
+        currentIndex = index;
 
         UpdateColors();
     }

@@ -43,6 +43,7 @@ public class ScoreBoard
 public class DataManager : MonoBehaviour
 {   
     SQLiteConnection db;
+    private int rankingSize;
 
     void Start()
     {
@@ -54,6 +55,7 @@ public class DataManager : MonoBehaviour
 
         db.CreateTable<ScoreBoard>();
         
+        rankingSize = GameController.gc.rankingListSize;
     }
 
     public void InsertPlayerData(string player, string email, string companyName)
@@ -97,9 +99,9 @@ public class DataManager : MonoBehaviour
         db.Insert(scoreBoard);
     }
 
-    public List<(string Player, int Score)> GetTop4Players()
+    public List<(string Player, int Score)> GetTopPlayers()
     {
-        string sql = @"
+        string sql = $@"
         SELECT *
         FROM ScoreBoard player
         WHERE player.id IN
@@ -111,7 +113,7 @@ public class DataManager : MonoBehaviour
             LIMIT 1
         )
         ORDER BY score DESC
-        LIMIT 4;
+        LIMIT {rankingSize};
         ";
 
         return db.Query<ScoreBoard>(sql)
